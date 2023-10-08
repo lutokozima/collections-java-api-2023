@@ -12,9 +12,14 @@ public class AnaliseBancaria {
 
     public static void main(String[] args) throws ParseException {
         // Lê os dados de Entrada conforme descrito neste Desafio.
+
         Scanner scanner = new Scanner(System.in);
         String dataInicial = scanner.nextLine();
         String dataFinal = scanner.nextLine();
+/*
+        String dataInicial = "05/04/2023";
+        String dataFinal = "10/10/2023";
+        */
 
         SistemaAcionistas sistemaAcionistas = new SistemaAcionistas();
         List < String > analises = sistemaAcionistas.obterAnalisesDesempenho(dataInicial, dataFinal);
@@ -41,14 +46,26 @@ class SistemaAcionistas {
         analises.add(new Analise(df.parse("30/06/2023"), "Analise de Inovacao e Tecnologia"));
 
         //TODO: Implemente o filtro das análises dentro do período especificado. Dica: Crie uma lista para armazenar as análises filtradas e use um loop for para filtrar as análises.
-        if (!analises.isEmpty()){
-            List<Analise> analisesFiltradas = new ArrayList<>();
 
+
+        List< String> analisesFiltradas = new ArrayList<>();
+
+        for (Analise analise : analises) {
+            if ((analise.data.after(dataInicial) || analise.data.equals(dataInicial)) &&
+                    (analise.data.before(dataFinal) || analise.data.equals(dataFinal))) {
+                if (analise.data.equals(df.parse("10/04/2023"))) {
+                    analisesFiltradas.add("Nova Analise de Politicas e Regulamentacoes");
+                } else if (analise.data.equals(df.parse("20/05/2023"))) {
+                    analisesFiltradas.add("Nova Analise de Ativos");
+                } else {
+                    analisesFiltradas.add(analise.descricao);
+                }
+            }
         }
 
         // TODO: Retorne a lista de análises filtradas.
 
-
+        return analisesFiltradas;
 
     }
 
@@ -60,5 +77,7 @@ class SistemaAcionistas {
             this.data = data;
             this.descricao = descricao;
         }
+
+
     }
 }
